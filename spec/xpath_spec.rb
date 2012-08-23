@@ -26,20 +26,20 @@ class Item
 
   element :title, String
   attribute :link, String, :xpath => 'amazing:link/@href'
-  has_one :different_link, String, :xpath => 'different:link/@href'
+  map_one :different_link, String, :xpath => 'different:link/@href'
   element :detail, String, :xpath => 'amazing:subitem/amazing:detail'
-  has_many :more_details_text, String, :xpath => 'amazing:subitem/amazing:more'
-  has_many :more_details, String, :xpath => 'amazing:subitem/amazing:more/@first|amazing:subitem/amazing:more/@alternative'
-  has_many :more_details_alternative, String, :xpath => 'amazing:subitem/amazing:more/@*'
+  map_many :more_details_text, String, :xpath => 'amazing:subitem/amazing:more'
+  map_many :more_details, String, :xpath => 'amazing:subitem/amazing:more/@first|amazing:subitem/amazing:more/@alternative'
+  map_many :more_details_alternative, String, :xpath => 'amazing:subitem/amazing:more/@*'
 
-  has_one :baby, 'Baby', :name => 'baby', :namespace => 'amazing'
+  map_one :baby, 'Baby', :name => 'baby', :namespace => 'amazing'
 
 end
 
 class Baby
   include HappyMapper
 
-  has_one :name, String
+  map_one :name, String
 end
 
 describe HappyMapper do

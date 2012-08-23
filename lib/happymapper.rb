@@ -150,7 +150,7 @@ module HappyMapper
     #
     # @see #element
     # 
-    def has_one(name, type, options={})
+    def map_one(name, type, options={})
       element name, type, {:single => true}.merge(options)
     end
     
@@ -164,7 +164,7 @@ module HappyMapper
     #
     # @see #element
     #
-    def has_many(name, type, options={})
+    def map_many(name, type, options={})
       element name, type, {:single => false}.merge(options)
     end
     

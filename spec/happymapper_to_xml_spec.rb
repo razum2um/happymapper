@@ -37,7 +37,7 @@ module ToXML
     #
     # Perform the on_save operation when saving
     # 
-    has_one :date_created, Time, :on_save => lambda {|time| DateTime.parse(time).strftime("%T %D") if time }
+    map_one :date_created, Time, :on_save => lambda {|time| DateTime.parse(time).strftime("%T %D") if time }
     
     
     #
@@ -46,7 +46,7 @@ module ToXML
     #
     # Write multiple elements and call on_save when saving
     #
-    has_many :dates_updated, Time, :on_save => lambda {|times| 
+    map_many :dates_updated, Time, :on_save => lambda {|times| 
       times.compact.map {|time| DateTime.parse(time).strftime("%T %D") } if times }
 
     #
@@ -72,8 +72,8 @@ module ToXML
     include HappyMapper
     
     attribute :code, String, :tag => 'countryCode'
-    has_one :name, String, :tag => 'countryName'
-    has_one :description, 'Description', :tag => 'description'
+    map_one :name, String, :tag => 'countryName'
+    map_one :description, 'Description', :tag => 'description'
     
     #
     # This inner-class here is to demonstrate saving a text node
@@ -165,7 +165,7 @@ module ToXML
       end
 
       
-      it "should save elements defined with the 'has_many' relationship" do
+      it "should save elements defined with the 'map_many' relationship" do
         dates_updated = @address_xml.xpath('dates_updated')
         dates_updated.length.should == 2
         dates_updated.first.text.should == "16:01:00 01/01/11"

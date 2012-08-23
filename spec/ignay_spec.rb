@@ -10,7 +10,7 @@ class CatalogTree
 
   attribute :code, String
   
-  has_many :nodes, 'CatalogNode', :tag => 'Node', :xpath => '.'
+  map_many :nodes, 'CatalogNode', :tag => 'Node', :xpath => '.'
   
 end
 
@@ -22,21 +22,21 @@ class CatalogNode
   
   attribute :back_office_id, String, :tag => 'vodBackOfficeId'
   
-  has_one :name, String, :tag => 'Name'
+  map_one :name, String, :tag => 'Name'
   # other important fields
   
-  has_many :translations, 'CatalogNode::Translations', :tag => 'Translation', :xpath => 'child::*'
+  map_many :translations, 'CatalogNode::Translations', :tag => 'Translation', :xpath => 'child::*'
   
   class Translations
     include HappyMapper
     tag 'Translation'
     
     attribute :language, String, :tag => 'Language'
-    has_one :name, String, :tag => 'Name'
+    map_one :name, String, :tag => 'Name'
     
   end
   
-  has_many :nodes, CatalogNode, :tag => 'Node', :xpath => 'child::*'
+  map_many :nodes, CatalogNode, :tag => 'Node', :xpath => 'child::*'
   
 end
 

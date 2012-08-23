@@ -42,8 +42,8 @@ module Analytics
     element :title, String
     element :tableId, String, :namespace => 'dxp'
 
-    has_many :properties, Property
-    has_many :goals, Goal
+    map_many :properties, Property
+    map_many :goals, Goal
   end
 
 
@@ -55,7 +55,7 @@ module Analytics
     element :updated, DateTime
     element :title, String
     element :table_id, String, :namespace => 'dxp', :tag => 'tableId'
-    has_many :properties, Property
+    map_many :properties, Property
   end
 
   class Feed
@@ -65,7 +65,7 @@ module Analytics
     element :id, String
     element :updated, DateTime
     element :title, String
-    has_many :entries, Entry
+    map_many :entries, Entry
   end
 end
 
@@ -83,7 +83,7 @@ module Atom
         :type => String,
         :href => String
       }
-    # has_many :entries, Entry # nothing interesting in the entries
+    # map_many :entries, Entry # nothing interesting in the entries
   end
 end
 
@@ -107,7 +107,7 @@ class FeatureBullet
   include HappyMapper
 
   tag 'features_bullets'
-  has_many :features, Feature
+  map_many :features, Feature
   element :bug, String
 end
 
@@ -115,8 +115,8 @@ class Product
   include HappyMapper
 
   element :title, String
-  has_one :feature_bullets, FeatureBullet
-  has_one :address, Address
+  map_one :feature_bullets, FeatureBullet
+  map_one :address, Address
 end
 
 module FamilySearch
@@ -124,13 +124,13 @@ module FamilySearch
     include HappyMapper
 
     tag 'alternateIds'
-    has_many :ids, String, :tag => 'id'
+    map_many :ids, String, :tag => 'id'
   end
 
   class Information
     include HappyMapper
 
-    has_one :alternateIds, AlternateIds
+    map_one :alternateIds, AlternateIds
   end
 
   class Person
@@ -139,12 +139,12 @@ module FamilySearch
     attribute :version, String
     attribute :modified, Time
     attribute :id, String
-    has_one :information, Information
+    map_one :information, Information
   end
 
   class Persons
     include HappyMapper
-    has_many :person, Person
+    map_many :person, Person
   end
 
   class FamilyTree
@@ -154,7 +154,7 @@ module FamilySearch
     attribute :version, String
     attribute :status_message, String, :tag => 'statusMessage'
     attribute :status_code, String, :tag => 'statusCode'
-    has_one :persons, Persons
+    map_one :persons, Persons
   end
 end
 
@@ -179,7 +179,7 @@ module FedEx
     element :timestamp, String, :tag => 'Timestamp'
     element :eventtype, String, :tag => 'EventType'
     element :eventdescription, String, :tag => 'EventDescription'
-    has_one :address, Address
+    map_one :address, Address
   end
 
   class PackageWeight
@@ -201,9 +201,9 @@ module FedEx
     element   :status_desc, String, :tag => 'StatusDescription'
     element   :carrier_code, String, :tag => 'CarrierCode'
     element   :service_info, String, :tag => 'ServiceInfo'
-    has_one   :weight, PackageWeight, :tag => 'PackageWeight'
+    map_one   :weight, PackageWeight, :tag => 'PackageWeight'
     element   :est_delivery,  String, :tag => 'EstimatedDeliveryTimestamp'
-    has_many  :events, Event
+    map_many  :events, Event
   end
 
   class Notification
@@ -233,9 +233,9 @@ module FedEx
     namespace 'v2'
     element   :highest_severity, String, :tag => 'HighestSeverity'
     element   :more_data, Boolean, :tag => 'MoreData'
-    has_many  :notifications, Notification, :tag => 'Notifications'
-    has_many  :trackdetails, TrackDetails, :tag => 'TrackDetails'
-    has_one   :tran_detail, TransactionDetail, :tab => 'TransactionDetail'
+    map_many  :notifications, Notification, :tag => 'Notifications'
+    map_many  :trackdetails, TrackDetails, :tag => 'TrackDetails'
+    map_one   :tran_detail, TransactionDetail, :tab => 'TransactionDetail'
   end
 end
 
@@ -246,7 +246,7 @@ end
 
 class Radar
   include HappyMapper
-  has_many :places, Place, :tag => :place
+  map_many :places, Place, :tag => :place
 end
 
 class Post
@@ -287,7 +287,7 @@ class Status
   element :in_reply_to_user_id, Integer
   element :favorited, Boolean
   element :non_existent, String, :tag => 'dummy', :namespace => 'fake'
-  has_one :user, User
+  map_one :user, User
 end
 
 class CurrentWeather
@@ -315,7 +315,7 @@ class Address
   element :postcode, String
   element :housenumber, String
   element :city, String
-  has_one :country, Country
+  map_one :country, Country
 end
 
 # for type coercion
@@ -339,7 +339,7 @@ module PITA
     tag 'Items' # if you put class in module you need tag
     element :total_results, Integer, :tag => 'TotalResults'
     element :total_pages, Integer, :tag => 'TotalPages'
-    has_many :items, Item
+    map_many :items, Item
   end
 end
 
@@ -378,11 +378,11 @@ module QuarterTest
     # it represented, but the refactoring that allows a single class
     # to be used for all these differently named elements is the next
     # best thing
-    has_one :details, QuarterTest::Details
-    has_one :q1, QuarterTest::Quarter, :tag => 'q1'
-    has_one :q2, QuarterTest::Quarter, :tag => 'q2'
-    has_one :q3, QuarterTest::Quarter, :tag => 'q3'
-    has_one :q4, QuarterTest::Quarter, :tag => 'q4'
+    map_one :details, QuarterTest::Details
+    map_one :q1, QuarterTest::Quarter, :tag => 'q1'
+    map_one :q2, QuarterTest::Quarter, :tag => 'q2'
+    map_one :q3, QuarterTest::Quarter, :tag => 'q3'
+    map_one :q4, QuarterTest::Quarter, :tag => 'q4'
   end
 end
 
@@ -426,8 +426,8 @@ module Dictionary
     include HappyMapper
 
     tag 'record'
-    has_many :definitions, Definition
-    has_many :variants, Variant, :tag => 'var'
+    map_many :definitions, Definition
+    map_many :variants, Variant, :tag => 'var'
   end
 end
 
@@ -468,8 +468,8 @@ class Article
   
   element :title, String
   element :text, String
-  has_many :photos, 'Photo', :tag => 'Photo', :namespace => 'photo', :xpath => '/article:Article'
-  has_many :galleries, 'Gallery', :tag => 'Gallery', :namespace => 'gallery'
+  map_many :photos, 'Photo', :tag => 'Photo', :namespace => 'photo', :xpath => '/article:Article'
+  map_many :galleries, 'Gallery', :tag => 'Gallery', :namespace => 'gallery'
   
   element :publish_options, PublishOptions, :tag => 'publishOptions', :namespace => 'article'
   
@@ -485,8 +485,8 @@ class PartiallyBadArticle
   
   element :title, String
   element :text, String
-  has_many :photos, 'Photo', :tag => 'Photo', :namespace => 'photo', :xpath => '/article:Article'
-  has_many :videos, 'Video', :tag => 'Video', :namespace => 'video'
+  map_many :photos, 'Photo', :tag => 'Photo', :namespace => 'photo', :xpath => '/article:Article'
+  map_many :videos, 'Video', :tag => 'Video', :namespace => 'video'
     
   element :publish_options, PublishOptions, :tag => 'publishOptions', :namespace => 'article'
   
@@ -597,7 +597,7 @@ describe HappyMapper do
     end
 
     it "should allow has one association" do
-      @klass.has_one(:user, User)
+      @klass.map_one(:user, User)
       element = @klass.elements.first
       element.name.should == 'user'
       element.type.should == User
@@ -605,7 +605,7 @@ describe HappyMapper do
     end
 
     it "should allow has many association" do
-      @klass.has_many(:users, User)
+      @klass.map_many(:users, User)
       element = @klass.elements.first
       element.name.should == 'users'
       element.type.should == User
@@ -874,7 +874,7 @@ describe HappyMapper do
     module StringFoo
       class Bar
         include HappyMapper
-        has_many :things, 'StringFoo::Thing'
+        map_many :things, 'StringFoo::Thing'
       end
 
       class Thing
