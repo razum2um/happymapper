@@ -38,7 +38,9 @@ module HappyMapper
       attribute = Attribute.new(name, type, options)
       @attributes[to_s] ||= []
       @attributes[to_s] << attribute
-      attr_accessor attribute.method_name.intern
+
+      # otherwise it overrides Mongoid props
+      attr_accessor attribute.method_name.intern unless self.respond_to?(:collection_name)
     end
     
     #
