@@ -40,7 +40,13 @@ module HappyMapper
       @attributes[to_s] << attribute
 
       # otherwise it overrides Mongoid props
-      attr_accessor attribute.method_name.intern unless self.respond_to?(:collection_name)
+      real_name = attribute.method_name.intern
+      unless respond_to? :mongo_session
+        attr_reader real_name unless respond_to?(real_name)
+        attr_writer real_name unless respond_to?("#{real_name}=")
+      end
+      #attr_accessor real_name
+      #attr_accessor attribute.method_name.intern unless self.respond_to?(:collection_name)
     end
     
     #
@@ -96,7 +102,10 @@ module HappyMapper
       element = Element.new(name, type, options)
       @elements[to_s] ||= []
       @elements[to_s] << element
-      attr_accessor element.method_name.intern
+
+      real_name = element.method_name.intern
+      attr_reader real_name unless method_defined?(real_name)
+      attr_writer real_name unless method_defined?("#{real_name}=")
     end
 
     #
@@ -128,7 +137,10 @@ module HappyMapper
     #
     def content(name, type, options={})
       @content = TextNode.new(name, type, options)
-      attr_accessor @content.method_name.intern
+
+      real_name = @content.method_name.intern
+      attr_reader real_name unless method_defined?(real_name)
+      attr_writer real_name unless method_defined?("#{real_name}=")
     end
 
     #
@@ -344,7 +356,7 @@ module HappyMapper
         
           # collect the object that we have created
           
-          obj
+          obj.respond_to?(:after_parse) and obj.after_parse or obj
         end
         
         # If a block has been provided and the user has requested that the objects
