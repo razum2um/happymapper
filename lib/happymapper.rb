@@ -41,10 +41,8 @@ module HappyMapper
 
       # otherwise it overrides Mongoid props
       real_name = attribute.method_name.intern
-      unless respond_to? :mongo_session
-        attr_reader real_name unless respond_to?(real_name)
-        attr_writer real_name unless respond_to?("#{real_name}=")
-      end
+      attr_reader real_name unless instance_methods.include?(real_name)
+      attr_writer real_name unless instance_methods.include?(:"#{real_name}=")
       #attr_accessor real_name
       #attr_accessor attribute.method_name.intern unless self.respond_to?(:collection_name)
     end
